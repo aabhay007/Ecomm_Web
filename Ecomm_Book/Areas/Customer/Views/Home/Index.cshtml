@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Ecomm_Book.Models.MyProduct>//collection
+
+<h2 class="text-center">Product List</h2>
+<form asp-controller="Home" asp-action="Index" method="get">
+    <div class="input-group mb-3 " style="margin-left:63%">
+
+        <input type="text" class="form-control" style="max-width: 20%;    border: 2px solid black;" name="searchString" placeholder="Search" value="@ViewBag.SearchString" />
+        <div class="input-group-append">
+            <select class="form-control" name="searchCriteria" style="border:2px solid black">
+                @foreach (var item in ViewBag.SearchCriteria as List<SelectListItem>)
+                {
+                    <!option value="@item.Value" @(item.Value == ViewBag.SelectedSearchCriteria ? "selected" : "")>@item.Text</!option>
+                }
+            </select>
+            <button class="btn btn-outline-secondary" type="submit" style="    background-color: darkcyan;
+    color: #fff;border:2px solid black">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-4">
+                <div class="row p-2">
+                    <div class="col-12  p-1" style="border:4px solid darkcyan; border-radius: 5px;">
+                        <div class="card" style="border:0px;">
+                            <img src="@product.ImageUrl" class="card-img-top rounded" />
+                            <div class="pl-1">
+                                <p class="card-title h5"><b style="color:#2c3e50">@product.Title</b></p>
+                                <p class="card-title" style="color:darkcyan">By <b>@product.Author</b></p>
+                            </div>
+                            <div style="padding-left:5px;">
+                                <p>List Price: <strike><b class="">$@product.ListPrice.ToString("0.00")</b></strike></p>
+                            </div>
+                            <div style="padding-left:5px;">
+                                <p style="color:maroon">As low as: <b class="">$@product.Price100.ToString("0.00")</b></p>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-action="Details" class="btn btn-primary form-control" style="background-color:darkcyan" asp-route-id="@product.Id">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h2 class="text-danger">No Product Found</h2>
+}

@@ -1,0 +1,142 @@
+﻿@model Ecomm_Book.Models.ViewModels.ProductVM
+@{
+    ViewData["Title"] = "Upsert";
+    var title = Model.MyProduct.Id != 0 ? "Edit Product" : "New Product";
+}
+
+<div>
+    <h2>@title</h2>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if(Model.MyProduct.Id!=0)
+            {
+                <input type="hidden" asp-for="@Model.MyProduct.Id"/>
+            }
+            <div class="form-group">
+                <label asp-for="MyProduct.Title"></label>
+                <input asp-for="MyProduct.Title" class="form-control"/>
+                <span asp-validation-for="MyProduct.Title" class="text-danger"></span>
+            </div> <div class="form-group">
+                <label asp-for="MyProduct.ISBN"></label>
+                <input asp-for="MyProduct.ISBN" class="form-control" />
+                <span asp-validation-for="MyProduct.ISBN" class="text-danger"></span>
+            </div> <div class="form-group">
+                <label asp-for="MyProduct.Author"></label>
+                <input asp-for="MyProduct.Author" class="form-control" />
+                <span asp-validation-for="MyProduct.Author" class="text-danger"></span>
+            </div> <div class="form-group">
+                <label asp-for="MyProduct.Description"></label>
+                <textarea asp-for="MyProduct.Description" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="MyProduct.Description" class="text-danger"></span>
+            </div> <div class="form-group">
+                <label asp-for="MyProduct.ListPrice"></label>
+                <input asp-for="MyProduct.ListPrice" class="form-control" />
+                <span asp-validation-for="MyProduct.ListPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MyProduct.Price"></label>
+                <input asp-for="MyProduct.Price" class="form-control" />
+                <span asp-validation-for="MyProduct.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MyProduct.Price50"></label>
+                <input asp-for="MyProduct.Price50" class="form-control" />
+                <span asp-validation-for="MyProduct.Price50" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="MyProduct.Price100"></label>
+                <input asp-for="MyProduct.Price100" class="form-control" />
+                <span asp-validation-for="MyProduct.Price100" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="MyProduct.ImageUrl"></label>
+               @* <input asp-for="Product.ListPrice" class="form-control"/>*@
+               <input type="file" name="files" id="uploadBox" multiple class=""/>
+                <span asp-validation-for="MyProduct.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MyProduct.CategoryId"></label>
+              @*  <input asp-for="Product.ListPrice" class="form-control"/>*@
+                @Html.DropDownListFor(m=>Model.MyProduct.CategoryId,Model.CategoryList,"Select Category",new{@class="form-control"})
+                <span asp-validation-for="MyProduct.CategoryId" class="text-danger"></span>
+            </div> <div class="form-group">
+                <label asp-for="MyProduct.CoverTypeId"></label>
+              @*  <input asp-for="Product.ListPrice" class="form-control"/>*@
+                @Html.DropDownListFor(m=>Model.MyProduct.CoverTypeId,Model.CoverTypeList,"Select CoverType",new{@class="form-control"})
+                <span asp-validation-for="MyProduct.CoverTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (Model.MyProduct.Id != 0)
+                {
+                    <partial name="_EditAndBackToListButtons"/>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col">
+                        <button type="submit" onclick="return ValData()" class="btn btn-info form-control">
+                            Save
+                        </button>  
+                        </div>
+                        <div class="col">
+                        <a asp-action="Index" class="btn btn-success form-control">
+                            Back To List
+                        </a>    
+                        </div>
+                        </div>
+                }
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        @if(Model.MyProduct.Id != 0)
+        {
+            <img src="@Model.MyProduct.ImageUrl"/>
+        }
+    </div>
+</div>
+@*@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="https://cdn.tiny.cloud/1/yceb7wqr2ps5v3vunieemb9syejgjl73j210uk6duakmo75e/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+   tinymce.init({
+       selector:"textarea",
+       plugins:"lists",
+       menubar:"File Edit Format"
+   })
+ </script>
+
+
+
+<script>
+function ValData(){
+    if(document.getElementById('uploadbox').value==""){
+        swal('Error',"Please Select image",'error');
+        return false;
+    }
+}
+</script>
+}
+*@
+@section scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.tiny.cloud/1/ne2gvt6wosycl0kuf5clobb4b1lmrluikc2iphrn6qn4dp7i/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: "textarea",
+            plugins: "lists",
+            menubar: "file edit format"
+        })
+
+        function ValData() {
+            if (document.getElementById('uploadBox').value == "") {
+                swal("error", "Please Select Image !!!", "error");
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
